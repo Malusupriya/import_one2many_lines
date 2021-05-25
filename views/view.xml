@@ -1,0 +1,27 @@
+<odoo>
+    <template id="import_one2many" name="Backend Assets (used in backend interface)" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <!--Importing JS files-->
+            <script type="text/javascript" src="/import_one2many_lines/static/src/js/controller.js"></script>
+            <script type="text/javascript" src="/import_one2many_lines/static/src/js/import_lines_backend.js"></script>
+        </xpath>
+    </template>
+
+    <record id="view_order_form_import_one2many" model="ir.ui.view">
+        <field name="name">view_order_form_import_one2many</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']" position="before">
+                <field name="id" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+            </xpath>
+            <!--Adding import_options -->
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="import_options">{'model': 'product.product', 'title': 'Product',
+                    'onchange_field': 'product_id', 'domain': [('type', '=', 'consu'), ('company_id', '=', company_id)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
